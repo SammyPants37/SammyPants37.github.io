@@ -1,0 +1,13 @@
+# Blender 4.1.1 MTL File: 'lanternv2.blend'
+# www.blender.org
+
+newmtl Material.002
+Ns 26.776867
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+illum 3
+map_Kd rusty_metal_sheet_diff_2k.png
+map_refl rusty_metal_sheet_disp_2k.png
+map_d rusty_metal_sheet_diff_2k.png
