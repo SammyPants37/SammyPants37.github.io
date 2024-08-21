@@ -4,7 +4,7 @@ func initialize(startPos):
 	position = startPos
 	
 	# randomly deside whether or not to hide lights
-	if randf() < 0.2:
+	if randf() < 0:
 		# hide the light and lantern model
 		hideLights()
 

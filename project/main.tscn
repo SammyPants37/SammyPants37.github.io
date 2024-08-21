@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://0u572fqxi6dq"]
+[gd_scene load_steps=19 format=3 uid="uid://0u572fqxi6dq"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_1rojv"]
 [ext_resource type="PackedScene" uid="uid://d0q6x43346vnm" path="res://winPillar.tscn" id="2_4f4ig"]
@@ -41,6 +41,16 @@ size = Vector3(128, 1, 128)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7ndj7"]
 font_size = 30
+
+[sub_resource type="Environment" id="Environment_n4vh6"]
+ambient_light_source = 2
+ambient_light_color = Color(0.169245, 0.169245, 0.169245, 1)
+ambient_light_energy = 0.2
+fog_light_color = Color(0.204004, 0.224835, 0.257584, 1)
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.01
+volumetric_fog_albedo = Color(0.796243, 0.796243, 0.796243, 1)
+volumetric_fog_emission = Color(0.129558, 0.129558, 0.129558, 1)
 
 [node name="Main" type="Node"]
 script = ExtResource("1_1rojv")
@@ -165,6 +175,9 @@ focus_neighbor_top = NodePath("../newMap")
 focus_neighbor_bottom = NodePath("../sameMap")
 min_value = 50.0
 value = 70.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_n4vh6")
 
 [connection signal="win" from="winPillar" to="." method="_on_win"]
 [connection signal="pressed" from="UI/sameMap" to="." method="_on_same_map_pressed"]
