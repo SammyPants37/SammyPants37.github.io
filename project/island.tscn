@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://bvy1er3te2grc"]
+
+[ext_resource type="Script" uid="uid://cr72kpjddlxrw" path="res://island.gd" id="1_0iamf"]
+[ext_resource type="Texture2D" uid="uid://jtu2s03ahkdj" path="res://circle.png" id="2_hdtfb"]
+[ext_resource type="Texture2D" uid="uid://cfqq8vfh5n6ol" path="res://circle-green.png" id="3_fgmf3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g2eve"]
+radius = 25.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_hdtfb"]
+size = Vector2(50, 50)
+
+[sub_resource type="QuadMesh" id="QuadMesh_fgmf3"]
+size = Vector2(50, 50)
+
+[node name="Island" type="StaticBody2D"]
+script = ExtResource("1_0iamf")
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_g2eve")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+z_index = -1
+mesh = SubResource("QuadMesh_hdtfb")
+texture = ExtResource("2_hdtfb")
+
+[node name="number" type="Label" parent="."]
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="complete" type="MeshInstance2D" parent="."]
+mesh = SubResource("QuadMesh_fgmf3")
+texture = ExtResource("3_fgmf3")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

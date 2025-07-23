@@ -1,0 +1,191 @@
+[gd_scene load_steps=6 format=3 uid="uid://c1qwih8e51oiy"]
+
+[ext_resource type="Script" uid="uid://d0hoejc2cfxno" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://b1kurd63j687x" path="res://displayBridge.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://3uaofpy5q8vo" path="res://bridge.tscn" id="4_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://dm1etjuu3hom7" path="res://back4.png" id="4_lquwl"]
+[ext_resource type="Texture2D" uid="uid://c3utp6snkxcue" path="res://restart2.png" id="5_lquwl"]
+
+[node name="main" type="Node"]
+script = ExtResource("1_ig7tw")
+displayBridge = ExtResource("3_h2yge")
+bridge = ExtResource("4_1bvp3")
+
+[node name="start-menu" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -27.0
+offset_top = -101.5
+offset_right = 27.0
+offset_bottom = 101.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="7x7-map" type="Button" parent="start-menu"]
+layout_mode = 2
+text = "7x7"
+
+[node name="HSeparator" type="HSeparator" parent="start-menu"]
+layout_mode = 2
+
+[node name="9x9-map" type="Button" parent="start-menu"]
+layout_mode = 2
+text = "9x9"
+
+[node name="HSeparator2" type="HSeparator" parent="start-menu"]
+layout_mode = 2
+
+[node name="11x11-map" type="Button" parent="start-menu"]
+layout_mode = 2
+text = "11x11"
+
+[node name="HSeparator4" type="HSeparator" parent="start-menu"]
+layout_mode = 2
+
+[node name="13x13-map" type="Button" parent="start-menu"]
+layout_mode = 2
+text = "13x13"
+
+[node name="HSeparator3" type="HSeparator" parent="start-menu"]
+visible = false
+layout_mode = 2
+
+[node name="start" type="Button" parent="start-menu"]
+visible = false
+layout_mode = 2
+text = "start"
+
+[node name="ingame-menu" type="VBoxContainer" parent="."]
+visible = false
+offset_right = 30.0
+offset_bottom = 66.0
+
+[node name="back" type="Button" parent="ingame-menu"]
+layout_mode = 2
+icon = ExtResource("4_lquwl")
+icon_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="ingame-menu"]
+visible = false
+layout_mode = 2
+
+[node name="restart" type="Button" parent="ingame-menu"]
+layout_mode = 2
+icon = ExtResource("5_lquwl")
+
+[node name="level-select" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 400.0
+offset_bottom = 399.0
+
+[node name="back" type="Button" parent="level-select"]
+layout_mode = 0
+offset_right = 30.0
+offset_bottom = 31.0
+icon = ExtResource("4_lquwl")
+icon_alignment = 1
+
+[node name="selectors" type="GridContainer" parent="level-select"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.0
+offset_top = -50.5
+offset_right = 39.0
+offset_bottom = 50.5
+grow_horizontal = 2
+grow_vertical = 2
+columns = 5
+
+[node name="Control" type="Control" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="level-select/selectors"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+text = "13x13"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Control3" type="Control" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="Control4" type="Control" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="level-1" type="Button" parent="level-select/selectors"]
+layout_mode = 2
+text = "1"
+
+[node name="VSeparator" type="VSeparator" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="level-2" type="Button" parent="level-select/selectors"]
+layout_mode = 2
+text = "2"
+
+[node name="VSeparator2" type="VSeparator" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="level-3" type="Button" parent="level-select/selectors"]
+layout_mode = 2
+text = "3"
+
+[node name="HSeparator" type="HSeparator" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="HSeparator4" type="HSeparator" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="HSeparator5" type="HSeparator" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="level-4" type="Button" parent="level-select/selectors"]
+layout_mode = 2
+text = "4"
+
+[node name="VSeparator3" type="VSeparator" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="level-5" type="Button" parent="level-select/selectors"]
+layout_mode = 2
+text = "5"
+
+[node name="VSeparator4" type="VSeparator" parent="level-select/selectors"]
+layout_mode = 2
+
+[node name="level-6" type="Button" parent="level-select/selectors"]
+layout_mode = 2
+text = "6"
+
+[connection signal="pressed" from="start-menu/7x7-map" to="." method="_on_7x7_pressed"]
+[connection signal="pressed" from="start-menu/9x9-map" to="." method="_on_9x9_pressed"]
+[connection signal="pressed" from="start-menu/11x11-map" to="." method="_on_11x11_pressed"]
+[connection signal="pressed" from="start-menu/13x13-map" to="." method="_on_13x13_pressed"]
+[connection signal="pressed" from="start-menu/start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="ingame-menu/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="ingame-menu/restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="level-select/back" to="." method="_on_level_back_pressed"]
+[connection signal="pressed" from="level-select/selectors/level-1" to="." method="_on_level_1_pressed"]
+[connection signal="pressed" from="level-select/selectors/level-2" to="." method="_on_level_2_pressed"]
+[connection signal="pressed" from="level-select/selectors/level-3" to="." method="_on_level_3_pressed"]
+[connection signal="pressed" from="level-select/selectors/level-4" to="." method="_on_level_4_pressed"]
+[connection signal="pressed" from="level-select/selectors/level-5" to="." method="_on_level_5_pressed"]
+[connection signal="pressed" from="level-select/selectors/level-6" to="." method="_on_level_6_pressed"]

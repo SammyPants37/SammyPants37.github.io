@@ -1,0 +1,159 @@
+func followBridge(posStart: String, dir: Array):
+	var isNode = false
+	var dist = 1
+	var posList = posStart.split(",")
+	while not isNode:
+		print(cords(int(posList[0]) + dir[0]*dist, int(posList[1])+dir[1]*dist))
+		print(map[cords(int(posList[0]) + dir[0]*dist, int(posList[1])+dir[1]*dist)])
+		if map[cords(int(posList[0]) + dir[0]*dist, int(posList[1])+dir[1]*dist)].contains("node"):
+			isNode = true
+			return cords(int(posList[0]) + dir[0]*dist, int(posList[1])+dir[1]*dist)
+		else:
+			dist += 1
+
+# algorithim taken from
+# https://liacs.leidenuniv.nl/assets/Bachelorscripties/2009-11TimoMorsink.pdf
+
+func generateMap(numPoints):
+	for row in range(height):
+		for col in range(width):
+			map[cords(row, col)] = "none"
+	map[cords(randi_range(0, width-1), randi_range(0, height-1))] = island.instantiate()
+	for i in range(numPoints+1):
+		var node = Vector2i()
+		var nodeIsValid = false
+		var dir = ""
+		while not nodeIsValid:
+			node = Vector2i(randi_range(0, width-1), randi_range(0, width-1))
+			if map[cords(node[0],node[1])].contains("node"):
+				var directions = ["u", "d", "r", "l"]
+				# print(node)
+				print("checking node:", cords(node[0], node[1]))
+				#print("up: ", map[cords(node[0], node[1]-1)])
+				#print("down: ", map[cords(node[0], node[1]+1)])
+				#print("left: ", map[cords(node[0]-1, node[1])])
+				#print("right: ", map[cords(node[0]+1, node[1])])
+				if node[1] < 2 or map[cords(node[0], node[1]-1)].contains("bridge") or map[cords(node[0], node[1]-1)].contains("node"):
+					directions.erase("u")
+				if (node[1] > height-3) or map[cords(node[0], node[1]+1)].contains("bridge") or map[cords(node[0], node[1]+1)].contains("node"):
+					directions.erase("d")
+				if node[0] < 2 or map[cords(node[0]-1, node[1])].contains("bridge") or map[cords(node[0]-1, node[1])].contains("node"):
+					directions.erase("l")
+				if (node[0] > width-3) or map[cords(node[0]+1, node[1])].contains("bridge") or map[cords(node[0]+1, node[1])].contains("node"):
+					directions.erase("r")
+				if not directions.is_empty():
+					dir = directions.pick_random()
+					nodeIsValid = true
+		var single = randi_range(0, 5) > 1
+		var distance = 2
+		var continuing = true
+		## initial continue check
+
+		match dir:
+			"u":
+				continuing = map[cords(node[0],node[1]-distance)].contains("none")
+			"d":
+				continuing = map[cords(node[0],node[1]+distance)].contains("none")
+			"l":
+				continuing = map[cords(node[0]-distance,node[1])].contains("none")
+			"r":
+				continuing = map[cords(node[0]+distance,node[1])].contains("none")
+
+		## move out
+		while continuing:
+			match dir:
+				"u":
+					if node[1]-distance > 0 and map[cords(node[0],node[1]-distance)].contains("none"):
+						distance += 1
+						continuing = randi_range(0, 1) < 1
+					else:
+						continuing = false
+				"d":
+					if node[1]+distance < height-1 and map[cords(node[0],node[1]+distance)].contains("none"):
+						distance += 1
+						continuing = randi_range(0, 1) < 1
+					else:
+						continuing = false
+				"l":
+					if node[0]-distance > 0 and map[cords(node[0]-distance,node[1])].contains("none"):
+						distance += 1
+						continuing = randi_range(0, 1) < 1
+					else:
+						continuing = false
+				"r":
+					if node[0]+distance < width-1 and map[cords(node[0]+distance,node[1])].contains("none"):
+						distance += 1
+						continuing = randi_range(0, 1) < 1
+					else:
+						continuing = false
+
+		match dir:
+			"u":
+				if not map[cords(node[0],node[1]-distance)].contains("node"):
+					var containsBridge = map[cords(node[0],node[1]-distance)].contains("bridge")
+					map[cords(node[0], node[1]-distance)] = island.instantiate()
+					if containsBridge:
+						var nodeLeft = followBridge(cords(node[0], node[1]-distance), [-1, 0])
+						var nodeRight = followBridge(cords(node[0], node[1]-distance), [1, 0])
+						map[nodeLeft].removeIsland(nodeRight, 0)
+						map[nodeRight].removeIsland(nodeLeft, 0)
+						map[nodeLeft].connectIsland(cords(node[0], node[1]-distance), 0)
+						map[nodeRight].connectIsland(cords(node[0], node[1]-distance), 0)
+						map[cords(node[0], node[1]-distance)].connectIsland(nodeLeft, int(map[cords(node[0]-1, node[1]-distance)].split(" ")[1]))
+						map[cords(node[0], node[1]-distance)].connectIsland(nodeRight, int(map[cords(node[0]-1, node[1]-distance)].split(" ")[1]))
+				map[cords(node[0],node[1])].connectIsland(cords(node[0],node[1]-distance), 1 if single else 2)
+				map[cords(node[0],node[1]-distance)].connectIsland(cords(node[0],node[1]), 1 if single else 2)
+				for point in range(1, distance):
+					map[cords(node[0], node[1]-point)] = "bridge" + (" 1" if single else " 2")
+			"d":
+				if not map[cords(node[0],node[1]+distance)].contains("node"):
+					var containsBridge = map[cords(node[0],node[1]+distance)].contains("bridge")
+					map[cords(node[0], node[1]+distance)] = island.instantiate()
+					if containsBridge:
+						var nodeLeft = followBridge(cords(node[0], node[1]+distance), [-1, 0])
+						var nodeRight = followBridge(cords(node[0], node[1]+distance), [1, 0])
+						map[nodeLeft].removeIsland(nodeRight, 0)
+						map[nodeRight].removeIsland(nodeLeft, 0)
+						map[nodeLeft].connectIsland(cords(node[0], node[1]+distance), 0)
+						map[nodeRight].connectIsland(cords(node[0], node[1]+distance), 0)
+						map[cords(node[0], node[1]+distance)].connectIsland(nodeLeft, int(map[cords(node[0]-1, node[1]+distance)].split(" ")[1]))
+						map[cords(node[0], node[1]+distance)].connectIsland(nodeRight, int(map[cords(node[0]-1, node[1]+distance)].split(" ")[1]))
+				map[cords(node[0],node[1])].connectIsland(cords(node[0],node[1]+distance), 1 if single else 2)
+				map[cords(node[0],node[1]+distance)].connectIsland(cords(node[0],node[1]), 1 if single else 2)
+				for point in range(1, distance):
+					map[cords(node[0], node[1]+point)] = "bridge" + (" 1" if single else " 2")
+			"l":
+				if not map[cords(node[0]-distance,node[1])].contains("node"):
+					var containsBridge = map[cords(node[0]-distance,node[1])].contains("bridge")
+					map[cords(node[0]-distance, node[1])] = island.instantiate()
+					if containsBridge:
+						var nodeUp = followBridge(cords(node[0]-distance, node[1]), [0, -1])
+						var nodeDown = followBridge(cords(node[0]-distance, node[1]), [0, 1])
+						map[nodeUp].removeIsland(nodeDown, 0)
+						map[nodeDown].removeIsland(nodeUp, 0)
+						map[nodeUp].connectIsland(cords(node[0]-distance, node[1]), 0)
+						map[nodeDown].connectIsland(cords(node[0]-distance, node[1]), 0)
+						map[cords(node[0]-distance, node[1])].connectIsland(nodeUp, int(map[cords(node[0]-distance, node[1]-1)].split(" ")[1]))
+				map[cords(node[0],node[1])].connectIsland(cords(node[0]-distance,node[1]), 1 if single else 2)
+				map[cords(node[0]-distance,node[1])].connectIsland(cords(node[0],node[1]), 1 if single else 2)
+				for point in range(1, distance):
+					map[cords(node[0]-point, node[1])] = "bridge" + (" 1" if single else " 2")
+			"r":
+				if not map[cords(node[0]+distance,node[1])].contains("node"):
+					var containsBridge = map[cords(node[0]+distance,node[1])].contains("bridge")
+					map[cords(node[0]+distance, node[1])] = island.instantiate()
+					if containsBridge:
+						var nodeUp = followBridge(cords(node[0]+distance, node[1]), [0, -1])
+						var nodeDown = followBridge(cords(node[0]+distance, node[1]), [0, 1])
+						map[nodeUp].removeIsland(nodeDown, 0)
+						map[nodeDown].removeIsland(nodeUp, 0)
+						map[nodeUp].connectIsland(cords(node[0]+distance, node[1]), 0)
+						map[nodeDown].connectIsland(cords(node[0]+distance, node[1]), 0)
+						map[cords(node[0]+distance, node[1])].connectIsland(nodeUp, int(map[cords(node[0]+distance, node[1]-1)].split(" ")[1]))
+				map[cords(node[0],node[1])].connectIsland(cords(node[0]+distance,node[1]), 1 if single else 2)
+				map[cords(node[0]+distance,node[1])].connectIsland(cords(node[0],node[1]), 1 if single else 2)
+				for point in range(1, distance):
+					map[cords(node[0]+point, node[1])] = "bridge" + (" 1" if single else " 2")
+
+		print("")
+		print(map)

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1kurd63j687x"]
+
+[ext_resource type="Script" uid="uid://bd043e65fdgk5" path="res://display_bridge.gd" id="1_3rss5"]
+
+[node name="displayBridge" type="Node2D"]
+z_index = -1
+z_as_relative = false
+script = ExtResource("1_3rss5")
+
+[node name="Line2D" type="Line2D" parent="."]
+z_index = -1
+default_color = Color(0.337255, 0.658824, 0.254902, 0.486275)
